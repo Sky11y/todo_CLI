@@ -1,0 +1,34 @@
+#ifndef TODO_H
+# define TODO_H
+
+#include <fcntl.h> //open()
+#include <unistd.h> //close()
+#include <stdio.h> //fprintf
+#include <stdlib.h> //malloc, realloc, free, EXIT_SUCCESS, EXIT_FAILURE
+#include <stdbool.h> //true, false
+#include <string.h> //strtok(), memcpy(), strdup(), strcpy()
+
+typedef unsigned int uint;
+
+#define BUFFER_SIZE 512
+#define MAX_TITLE_LEN 15
+
+typedef enum {
+	TODO_PENDING,
+	TODO_DONE,
+} e_status;
+
+typedef struct {
+	uint		id;
+	char		title[MAX_TITLE_LEN + 1];
+	char*		description;
+	e_status	status;
+} s_item;
+
+typedef struct {
+	s_item*	items;
+	uint	count;
+	uint	capacity;
+} s_data;
+
+#endif

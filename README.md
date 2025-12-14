@@ -1,0 +1,87 @@
+SIMPLE CLI TO-DO APPLICATION
+
+## Features
+- Add an item
+    - task title, description
+- Delete an item
+- Modify an item
+- Mark the item as done
+- Exit the program
+- Two sections:
+    - Pending
+    - Done
+
+## How it works
+- Upon app start
+    - Datafiles existance is checked
+        - Datafile is created upon first start
+        - Data is storen in a plain text, one item per record.
+    - The whole datafile is read to the program (for fast use)
+- The main loop
+    - UI shows the sections 'pending' and 'done'
+        - id and title is shown for every item
+    - Prompt user for an action and wait until one is given
+        - ADD, add an item
+        - DEL \<id>, delete an item
+        - MOD \<id>, modify an existing item,
+        - FIN \<id>, mark item as finished
+        - SAVE, saves the work to the file -> no autosave
+        - EXIT, exit the program
+    - if given action is valid behave accordingly
+        - if action is not valid give an explicit error and show help and return loop beginning
+
+- User adds an item (ADD)
+    - Item title and description is prompted from the user
+        - max chars should be set (at least) for title to keep the UI clean
+    - Item gets an id and it is saved to the datafile
+        - Also keep it in program memory so it doesn't need to be read from the datafile again under current session
+    - UI presents the new item on PENDING section
+- User deletes an item (DEL)
+    - Item is removed from the datafile and programs memory all together
+    - Item's id is freed for future use (might be tricky)
+        Consider: id's are unique and never reused withing a datafile
+- Modify an item (MOD)
+    - User selects an id to modify
+    - Description of the item is shown to the user
+        - For now everything will be overwritten. Later a partial modification should be added.
+    - re-prompt title and description
+- User marks item as done (FIN)
+    - Item is moved from PENDING to DONE section
+    - Item's id is still preserved for possible deleting
+
+## Ideas
+- Every item could be a struct, with uint id, char title[20], char \*description, enum status (pending/done).
+- All the structs should be adjacent in memory
+    - allocate some extra structs at the beginning of session
+    - or use realloc
+
+
+## Features to add
+- Due date
+    - new section for "due date missed"
+    - prompt user for due date
+        - Error handling is needed for date validation
+    - check all the due dates when app is started
+    - allow due date modification
+        check if item needs to be moved from due date missed to pending
+- add possibility to modify the items without overwriting.
+    - If I do the text editor I would know how
+
+## What is missing
+- No due date
+- No undo/redo
+- No concurrent access
+- No partial text editing
+
+## Possible approach
+1. OK Define structs and enums
+2. OK Implement in-memory storage
+3. Add / delete / modify without file I/O
+4. Add file load/save
+5. Add command parsing
+6. Polish error handling
+
+## Error handling
+- Make sure the user can't add pipe "|" character
+- Check every memory allocation failure
+- Prompt the user that max length of title is 15 and if it's longer, it will be truncated.
