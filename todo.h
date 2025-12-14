@@ -6,7 +6,7 @@
 #include <stdio.h> //fprintf
 #include <stdlib.h> //malloc, realloc, free, EXIT_SUCCESS, EXIT_FAILURE
 #include <stdbool.h> //true, false
-#include <string.h> //strtok(), memcpy(), strdup(), strcpy()
+#include <string.h> //strtok(), memcpy(), strncpy()
 
 typedef unsigned int uint;
 
@@ -30,5 +30,15 @@ typedef struct {
 	uint	count;
 	uint	capacity;
 } s_data;
+
+//data.c
+int init_data(s_data* data);
+int resize_data(s_data* data);
+void free_data(s_data* data);
+
+//datafile.c
+int read_datafile(int fd, s_data* data);
+//int save_datafile(s_data* data);
+
 
 #endif
