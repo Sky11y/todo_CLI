@@ -2,7 +2,7 @@ SIMPLE CLI TO-DO APPLICATION
 
 ## Features
 - Add an item
-    - task title, description
+    - task title, task description
 - Delete an item
 - Modify an item
 - Mark the item as done
@@ -13,7 +13,7 @@ SIMPLE CLI TO-DO APPLICATION
 
 ## How it works
 - Upon app start
-    - Datafiles existance is checked
+    - Datafiles existance is checked (user can also provide datafile)
         - Datafile is created upon first start
         - Data is storen in a plain text, one item per record.
     - The whole datafile is read to the program (for fast use)
@@ -32,7 +32,8 @@ SIMPLE CLI TO-DO APPLICATION
 
 - User adds an item (ADD)
     - Item title and description is prompted from the user
-        - max chars should be set (at least) for title to keep the UI clean
+        - max chars is set for title to keep the UI clean
+        - max chars is currently set for the description to keep implemenation simple
     - Item gets an id and it is saved to the datafile
         - Also keep it in program memory so it doesn't need to be read from the datafile again under current session
     - UI presents the new item on PENDING section
@@ -66,6 +67,7 @@ SIMPLE CLI TO-DO APPLICATION
         check if item needs to be moved from due date missed to pending
 - add possibility to modify the items without overwriting.
     - If I do the text editor I would know how
+- "unlimited" size description (The title should always be limited)
 
 ## What is missing
 - No due date

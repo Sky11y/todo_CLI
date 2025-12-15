@@ -4,7 +4,6 @@ static int parse_buffer(char* buf, s_data* data)
 {
 	uint j = data->count;
 	char* token;
-	uint tokenlen;
 
 	for (uint i = 0;; ++i, buf = NULL) {
 		token = strtok(buf, "|");
@@ -15,21 +14,19 @@ static int parse_buffer(char* buf, s_data* data)
 				data->items[j].id = strtoul(token, NULL, 10);
 				break;
 			case 1:
-				strncpy(data->items[j].title, token, MAX_TITLE_LEN);
+				safe_strlcpy(data->items[j].title, token, MAX_TITLE_LEN);
 				break;
 			case 2:
-				tokenlen = strlen(token) + 1;
-				data->items[j].description = malloc(sizeof(char) * tokenlen);
-				if (data->items[j].description == NULL) {
-					return -1;
-				}
-				memcpy(data->items[j].description, token, tokenlen);
+				safe_strlcpy(data->items[j].description, token, MAX_DESCRIPTION_LEN);
 				break;
 			case 3:
 				if (token[0] == 'P') {
 					data->items[j++].status = TODO_PENDING;
 				} else if (token[0] == 'D') {
 					data->items[j++].status = TODO_DONE;
+				}
+				if (j == data->capacity) {
+					resize_data(data);
 				}
 				break;
 		}
@@ -38,7 +35,6 @@ static int parse_buffer(char* buf, s_data* data)
 	data->count = j;
 
 	return 0;
-	//resize_data(&data);
 }
 
 int read_datafile(int fd, s_data* data)

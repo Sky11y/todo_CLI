@@ -5,6 +5,9 @@ void print_data(s_data* data);
 void main_loop(s_data* data)
 {
 	printf("What would you like to do? (ADD/DEL/MOD/FIN/EXIT/HELP)\n");
+
+	
+	//add
 }
 
 int main(int argc, char** argv)
@@ -44,6 +47,7 @@ int main(int argc, char** argv)
 	free_data(&data);
 	return EXIT_SUCCESS;
 }
+
 void print_data(s_data* data)
 {
 	printf("%5s|%15s|%15s|%10s|\n", "id", "title", "description", "status");

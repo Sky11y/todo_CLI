@@ -1,3 +1,4 @@
 data.psv
 *.swp
 app
+*build*

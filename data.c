@@ -24,10 +24,6 @@ int resize_data(s_data* data)
 
 void free_data(s_data* data)
 {
-	for (uint i = 0; i < data->count; ++i) {
-		free(data->items[i].description);
-	}
 	free(data->items);
 }
-
 
