@@ -42,7 +42,7 @@ int read_datafile(int fd, s_data* data)
 	char buf[BUFFER_SIZE];
 	int bytes_read;
 
-	while (true) {
+	while (TRUE) {
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read == 0) {
 			break;

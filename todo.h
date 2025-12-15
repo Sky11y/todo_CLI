@@ -5,10 +5,12 @@
 #include <unistd.h> //close()
 #include <stdio.h> //fprintf
 #include <stdlib.h> //malloc, realloc, free, EXIT_SUCCESS, EXIT_FAILURE
-#include <stdbool.h> //true, false
-#include <string.h> //strtok(), memcpy(), strncpy()
+#include <string.h> //strtok(), memcpy()
 
 typedef unsigned int uint;
+
+#define TRUE 1
+#define FALSE 0
 
 #define BUFFER_SIZE 512
 #define MAX_TITLE_LEN 16
@@ -42,6 +44,12 @@ int read_datafile(int fd, s_data* data);
 //int save_datafile(s_data* data);
 
 //utils
+
+/*
+ * Copies max. dsize - 1 chars from src to dst.
+ * Guarantees to '\0'-terminate the dst (hence max. dsize - 1)
+ * Returns the number of characters copied, exluding the terminating '\0'
+ */
 uint safe_strlcpy(char *restrict dst, const char *restrict src, uint dsize);
 
 #endif
