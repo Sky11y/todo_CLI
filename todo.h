@@ -5,7 +5,7 @@
 #include <unistd.h> //close()
 #include <stdio.h> //fprintf
 #include <stdlib.h> //malloc, realloc, free, EXIT_SUCCESS, EXIT_FAILURE
-#include <string.h> //strtok(), memcpy()
+#include <string.h> //strtok()
 
 typedef unsigned int uint;
 

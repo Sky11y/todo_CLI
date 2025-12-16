@@ -2,12 +2,27 @@
 
 void print_data(s_data* data);
 
+int add(s_data* data)
+{
+	s_item *item = &data->items[data->count];
+	printf("Add title (max. %u characters)\n", MAX_TITLE_LEN - 1);
+	//make a function here that check the unwanted chars \t\n\v etc.
+	while (iscntrl(item->title[0])) {
+		fgets(item->title, MAX_TITLE_LEN, stdin);
+	}
+	data->count++;
+	if (data->count == data->capacity) {
+		resize_data(data);
+	}
+	return 0;
+}
+
 void main_loop(s_data* data)
 {
 	printf("What would you like to do? (ADD/DEL/MOD/FIN/EXIT/HELP)\n");
 
-	
-	//add
+	add(data);
+	//char *fgets(char s[restrict .size], int size, FILE *restrict stream);
 }
 
 int main(int argc, char** argv)
@@ -39,8 +54,8 @@ int main(int argc, char** argv)
 
 	close(fd);
 
-	print_data(&data);
 	main_loop(&data);
+	print_data(&data);
 
 	//save the work and clean up
 	//save_datafile(&data);

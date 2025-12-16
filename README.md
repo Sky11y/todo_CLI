@@ -56,6 +56,20 @@ SIMPLE CLI TO-DO APPLICATION
     - allocate some extra structs at the beginning of session
     - or use realloc
 
+## Approach and what I'm currently working on
+OK=section done, WIP=currently working on, NO=not yet started
+1. OK Define structs and enums
+2. OK Implement in-memory storage
+3. WIP Add / delete / modify without file I/O
+4. NO Add file load/save
+5. NO Add command parsing
+6. NO Polish error handling
+
+## Error handling
+- Make sure the user can't add pipe "|" character
+- Check every memory allocation failure
+- Prompt the user that max length of title is 15 and if it's longer, it will be truncated.
+    - Same thing for the description
 
 ## Features to add
 - Due date
@@ -69,21 +83,8 @@ SIMPLE CLI TO-DO APPLICATION
     - If I do the text editor I would know how
 - "unlimited" size description (The title should always be limited)
 
-## What is missing
+## What is currently missing
 - No due date
 - No undo/redo
 - No concurrent access
 - No partial text editing
-
-## Possible approach
-1. OK Define structs and enums
-2. OK Implement in-memory storage
-3. Add / delete / modify without file I/O
-4. Add file load/save
-5. Add command parsing
-6. Polish error handling
-
-## Error handling
-- Make sure the user can't add pipe "|" character
-- Check every memory allocation failure
-- Prompt the user that max length of title is 15 and if it's longer, it will be truncated.
