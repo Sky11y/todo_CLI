@@ -54,7 +54,7 @@ SIMPLE CLI TO-DO APPLICATION
 - Every item could be a struct, with uint id, char title[20], char \*description, enum status (pending/done).
 - All the structs should be adjacent in memory
     - allocate some extra structs at the beginning of session
-    - or use realloc
+    - and/or use realloc
 
 ## Approach and what I'm currently working on
 OK=section done, WIP=currently working on, NO=not yet started
@@ -70,6 +70,7 @@ OK=section done, WIP=currently working on, NO=not yet started
 - Check every memory allocation failure
 - Prompt the user that max length of title is 15 and if it's longer, it will be truncated.
     - Same thing for the description
+- Prevent empty title (description can be empty).
 
 ## Features to add
 - Due date
@@ -82,6 +83,8 @@ OK=section done, WIP=currently working on, NO=not yet started
 - add possibility to modify the items without overwriting.
     - If I do the text editor I would know how
 - "unlimited" size description (The title should always be limited)
+- termios.h for the control character usage
+    - atl+\n will give new line on description
 
 ## What is currently missing
 - No due date

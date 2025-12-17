@@ -5,12 +5,32 @@ void print_data(s_data* data);
 int add(s_data* data)
 {
 	s_item *item = &data->items[data->count];
-	printf("Add title (max. %u characters)\n", MAX_TITLE_LEN - 1);
-	//make a function here that check the unwanted chars \t\n\v etc.
-	while (iscntrl(item->title[0])) {
+
+	//title can't be empty
+	while (TRUE) {
+		printf("Add title (max. %u characters)\n", MAX_TITLE_LEN - 1);
 		fgets(item->title, MAX_TITLE_LEN, stdin);
+		if (is_all_of(item->title, "\n\t \v") == 1) {
+			printf("Title can't be empty\n");
+			//stdin needs to be flushed
+			continue;
+		}
+		int len = strlen(item->title) - 1;
+		item->title[len] = '\0';
+		break;
 	}
-	data->count++;
+
+	//decription is optional, hence can be empty
+	printf("Add description (max. %u characters)\n", MAX_DESCRIPTION_LEN - 1);
+	fgets(item->description, MAX_DESCRIPTION_LEN, stdin);
+	int len = strlen(item->description) - 1;
+	if (len > 0) {
+		item->description[len] = '\0';
+	}
+
+	item->status = 0;
+	item->id = ++data->count;
+
 	if (data->count == data->capacity) {
 		resize_data(data);
 	}
