@@ -2,7 +2,8 @@
 
 int add(s_data* data)
 {
-	s_item *item = &data->items[data->count];
+	uint next_item = data->count;
+	s_item *item = &(data->items[next_item]);
 	
 	//title can't be empty
 	while (1) {
@@ -25,8 +26,9 @@ int add(s_data* data)
 	}
 	strtrim(item->description, " \t\v");
 
+	data->count += 1;
 	item->status = 0;
-	item->id = ++data->count;
+	item->id = data->count;
 
 	if (data->count == data->capacity) {
 		resize_data(data);
@@ -37,6 +39,7 @@ int add(s_data* data)
 int del(s_data* data, uint id)
 {
 	uint i;
+
 	if (id == 0) {
 		printf("No such id\n");
 		return -1;
@@ -55,6 +58,7 @@ int del(s_data* data, uint id)
 int fin(s_data* data, uint id)
 {
 	uint i;
+
 	if (id == 0) {
 		printf("No such id\n");
 		return -1;

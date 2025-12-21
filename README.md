@@ -13,9 +13,9 @@ SIMPLE CLI TO-DO APPLICATION
 
 ## How it works
 - Upon app start
-    - Datafiles existance is checked (user can also provide datafile)
+    - Datafiles existance is checked
         - Datafile is created upon first start
-        - Data is storen in a plain text, one item per record.
+        - Data is stored in .psv ("pipe separated file"), one item per record.
     - The whole datafile is read to the program (for fast use)
 - The main loop
     - UI shows the sections 'pending' and 'done'
@@ -71,9 +71,11 @@ OK=section done, WIP=currently working on, NO=not yet started
 ## Error handling
 - Make sure the user can't add pipe "|" character
 - Check every memory allocation failure
-- Prompt the user that max length of title is 15 and if it's longer, it will be truncated.
-    - Same thing for the description
-- Prevent empty title (description can be empty).
+- Make a temp file where data will be written
+    - When writing is done successfully -> delete the old file
+- OK Prompt the user that max length of title is 15 and if it's longer, it will be truncated.
+    - OK Same thing for the description
+- OK Prevent empty title (description can be empty).
 
 ## Features to add
 - Due date
@@ -86,6 +88,8 @@ OK=section done, WIP=currently working on, NO=not yet started
 - add possibility to modify the items without overwriting.
     - If I do the text editor I would know how
 - "unlimited" size description (The title should always be limited)
+- user could also provide a datafile as an argument.
+    - Or user could load it inside the program LOAD \<datatfile>
 - termios.h for the control character usage
     - atl+\n will give new line on description
 

@@ -49,10 +49,10 @@ fclean:		clean
 
 re:			fclean all
 
-debug:
+debug:		clean
 			$(MAKE) BUILD=debug
 
-release:
+release:	clean
 			$(MAKE) BUILD=release
 
 .PHONY:		all clean fclean re debug release

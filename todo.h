@@ -41,7 +41,7 @@ void free_data(s_data* data);
 
 //datafile.c
 int read_datafile(int fd, s_data* data);
-//int save_datafile(s_data* data);
+int save_datafile(s_data* data);
 
 //add_del.c
 int add(s_data* data);
