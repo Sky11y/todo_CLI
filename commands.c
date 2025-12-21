@@ -2,8 +2,7 @@
 
 int add(s_data* data)
 {
-	uint next_item = data->count;
-	s_item *item = &(data->items[next_item]);
+	s_item *item = &(data->items[data->count]);
 	
 	//title can't be empty
 	while (1) {
