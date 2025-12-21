@@ -2,13 +2,14 @@
 
 void main_loop(s_data* data)
 {
-	uint id = 3;
+	//uint id = 3;
 	printf("What would you like to do? (ADD/DEL/MOD/FIN/LST/EXIT/HELP)\n");
 
+	//working commands
 	//add(data);
 	//help();
 	//del(data, id);
-	fin(data, id);
+	//fin(data, id);
 }
 
 int main(int argc, char** argv)
