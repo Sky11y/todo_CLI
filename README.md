@@ -55,6 +55,9 @@ SIMPLE CLI TO-DO APPLICATION
 - All the structs should be adjacent in memory
     - allocate some extra structs at the beginning of session
     - and/or use realloc
+- When program is running DEL will set the item-\>id to 0.
+    - When the program exits items with id 0 will not be written to the file
+    - i.e. DEL will not remove anything during program running
 
 ## Approach and what I'm currently working on
 OK=section done, WIP=currently working on, NO=not yet started
