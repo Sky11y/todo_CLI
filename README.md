@@ -94,6 +94,8 @@ OK=section done, WIP=currently working on, NO=not yet started
     - Or user could load it inside the program LOAD \<datatfile>
 - termios.h for the control character usage
     - atl+\n will give new line on description
+- Priority
+    - LST would list the items by priority
 
 ## What is currently missing
 - No due date

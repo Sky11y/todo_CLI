@@ -2,13 +2,15 @@ NAME		= app
 
 CC			= gcc
 BUILDDIR	= build/
+SRCDIR		= src/
+INCDIR		= inc/
 
-SRC			= $(wildcard *.c)
-OBJ			= $(patsubst %.c, $(BUILDDIR)%.o, $(SRC))
+SRC			= $(wildcard $(SRCDIR)*.c)
+OBJ			= $(patsubst $(SRCDIR)%.c, $(BUILDDIR)%.o, $(SRC))
 DEP			= $(OBJ:.o=.d)
 
 DEPFLAGS	= -MMD -MP
-INCLUDES	= -I.
+INCLUDES	= -I./$(INCDIR)
 
 CFLAGS		= -Wall -Wextra -pedantic
 DBGFLAGS	= -g -O0 -DDEBUG
@@ -33,7 +35,7 @@ all:		$(NAME)
 $(NAME): $(OBJ)
 			$(CC) $(CFLAGS) $^ -o $@
 
-$(BUILDDIR)%.o: %.c | $(BUILDDIR)
+$(BUILDDIR)%.o: $(SRCDIR)%.c | $(BUILDDIR)
 			$(CC) $(CFLAGS) $(DEPFLAGS) $(INCLUDES) -c $< -o $@
 
 $(BUILDDIR):
