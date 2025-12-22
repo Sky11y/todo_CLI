@@ -41,11 +41,9 @@ int main(int argc, char** argv)
 
 	close(fd);
 
-	printf("data count before: %d\n", data.count);
 	main_loop(&data);
 	//debug_print(&data);
 
-	printf("data count after: %d\n", data.count);
 	//save the work and clean up
 	save_datafile(&data);
 	free_data(&data);
