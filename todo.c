@@ -2,15 +2,16 @@
 
 void main_loop(s_data* data)
 {
-	printf("What would you like to do? (ADD/DEL/MOD/FIN/LST/EXIT/HELP)\n");
+	int running;
 
-	//working commands
-	add(data);
-	//help();
-	del(data, 4);
-	fin(data, 2);
-	//
-	
+	running = TRUE;
+	while (running) {
+		printf("What would you like to do? (ADD/DEL/MOD/FIN/LST/SHOW/EXIT/HELP)\n");
+		running = prompt_user(data);
+		if (running == -1) {
+			return;
+		}
+	}
 }
 
 int main(int argc, char** argv)
@@ -42,12 +43,13 @@ int main(int argc, char** argv)
 
 	printf("data count before: %d\n", data.count);
 	main_loop(&data);
-	print_data(&data);
+	//debug_print(&data);
 
 	printf("data count after: %d\n", data.count);
 	//save the work and clean up
 	save_datafile(&data);
 	free_data(&data);
+	
 	return EXIT_SUCCESS;
 }
 

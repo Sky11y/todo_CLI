@@ -58,14 +58,16 @@ SIMPLE CLI TO-DO APPLICATION
 - When program is running DEL will set the item-\>id to 0.
     - When the program exits items with id 0 will not be written to the file
     - i.e. DEL will not remove anything during program running
-
+- It probably doesn't make any sense to write the id to the file.
+    - Remove and change the initiali datafile reading.
+    
 ## Approach and what I'm currently working on
 OK=section done, WIP=currently working on, NO=not yet started
 1. OK Define structs and enums
 2. OK Implement in-memory storage
-3. WIP Add / delete / modify without file I/O
-4. NO Add file load/save
-5. NO Add command parsing
+3. OK Add / delete / modify without file I/O
+4. OK Add file load/save
+5. OK Add command parsing
 6. NO Polish error handling
 
 ## Error handling

@@ -30,6 +30,7 @@ int read_buf_from_stdin(char *restrict buf, size_t n)
 		buf[n - 1] = '\0';
 		flush_stdin();
 	}
+
 	return 0;
 }
 
@@ -49,5 +50,54 @@ static int flush_stdin(void)
 			break;
 		}
 	}
+	
 	return 0;
+}
+
+int prompt_user(s_data* data)
+{
+	char buffer[10];
+	uint id;
+
+	if (read_buf_from_stdin(buffer, 10) == -1) {
+		perror("Could not read the user input\n");
+		return -1;
+	}
+
+	strtrim(buffer, " \t\v");
+	str_to_upper(buffer);
+	
+	if (strncmp(buffer, "ADD", 3) == 0) {
+		add(data);
+	}
+	else if (strncmp(buffer, "DEL", 3) == 0) {
+		id = strtoul(&buffer[3], NULL, 10);
+		del(data, id);
+	}
+	else if (strncmp(buffer, "FIN", 3) == 0) {
+		id = strtoul(&buffer[3], NULL, 10);
+		fin(data, id);
+	}
+	else if (strncmp(buffer, "MOD", 3) == 0) {
+		id = strtoul(&buffer[3], NULL, 10);
+		mod(data, id);
+	}
+	else if (strncmp(buffer, "SHOW", 4) == 0) {
+		id = strtoul(&buffer[4], NULL, 10);
+		show(data, id);
+	}
+	else if (strncmp(buffer, "LST", 4) == 0) {
+		list(data);
+	}
+	else if (strncmp(buffer, "HELP", 4) == 0) {
+		help();
+	}
+	else if (strncmp(buffer, "EXIT", 4) == 0) {
+		return 0;
+	}
+	else {
+		printf("Invalid input\n");
+	}
+
+	return 1;
 }

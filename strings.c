@@ -139,3 +139,32 @@ int is_all_of(const char *restrict test, const char *restrict chars)
 	return 1;
 }
 
+void str_to_lower(char *restrict str)
+{
+	uint i;
+
+	if (!str) {
+		return ;
+	}
+	
+	for (i = 0; str[i]; ++i) {
+		if (str[i] >= 'A' && str[i] <= 'Z') {
+			str[i] += 32;
+		}
+	}
+}
+
+void str_to_upper(char *restrict str)
+{
+	uint i;
+
+	if (!str) {
+		return ;
+	}
+	
+	for (i = 0; str[i]; ++i) {
+		if (str[i] >= 'a' && str[i] <= 'z') {
+			str[i] -= 32;
+		}
+	}
+}

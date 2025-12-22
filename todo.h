@@ -14,7 +14,7 @@ typedef unsigned int uint;
 
 #define BUFFER_SIZE 512
 #define MAX_TITLE_LEN 16
-#define MAX_DESCRIPTION_LEN 256
+#define MAX_DESCRIPTION_LEN 1024
 
 typedef enum {
 	TODO_PENDING,
@@ -43,15 +43,22 @@ void free_data(s_data* data);
 int read_datafile(int fd, s_data* data);
 int save_datafile(s_data* data);
 
-//add_del.c
+//item_modifiers.c
 int add(s_data* data);
 int del(s_data* data, uint id);
 int fin(s_data* data, uint id);
+int mod(s_data* data, uint id);
 
 //utils.c
 void help(void);
-void print_data(s_data* data);
+void debug_print(s_data* data);
+void list(s_data* data);
+int show(s_data* data, uint id);
+s_item* get_item(s_data* data, uint id);
 
+//input.c
+int prompt_user(s_data* data);
+int read_buf_from_stdin(char *restrict buf, size_t n);
 
 //strings.c
 /*
@@ -104,5 +111,16 @@ void strtrim_front(char *restrict str, const char *restrict chars);
  */
 void strtrim_back(char *restrict str, const char *restrict chars);
 
-int read_buf_from_stdin(char *restrict buf, size_t n);
+/*
+ * Change all capital characters of *str* to lower characters.
+ * Important! This function modifies the *str* in place.
+ */
+void str_to_lower(char *restrict str);
+
+/*
+ * Change all lower characters of *str* to capital characters.
+ * Important! This function modifies the *str* in place.
+ */
+void str_to_upper(char *restrict str);
+
 #endif

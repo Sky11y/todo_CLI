@@ -32,48 +32,67 @@ int add(s_data* data)
 	if (data->count == data->capacity) {
 		resize_data(data);
 	}
+
 	return 0;
 }
 
 int del(s_data* data, uint id)
 {
-	uint i;
+	s_item* item;
 
-	if (id == 0) {
-		printf("No such id\n");
+	item = get_item(data, id);
+	if (!item) {
 		return -1;
 	}
+	item->id = 0;
 
-	for (i = 0; i < data->count; ++i) {
-		if (data->items[i].id == id) {
-			data->items[i].id = 0;
-			return 0;
-		}
-	}
-	printf("No such id\n");
-	return 1;	
+	return 0;	
 }
 
 int fin(s_data* data, uint id)
 {
-	uint i;
+	s_item* item;
 
-	if (id == 0) {
-		printf("No such id\n");
+	item = get_item(data, id);
+	if (!item) {
 		return -1;
 	}
 
-	for (i = 0; i < data->count; ++i) {
-		if (data->items[i].id == id) {
-			if (data->items[i].status == TODO_DONE) {
-				printf("Item already finished!\n");
-				return 0;
-			}
-			data->items[i].status = TODO_DONE;
-			return 0;
-		}
+	if (item->status == TODO_DONE) {
+		printf("Item already finished!\n");
 	}
-	printf("No such id\n");
-	return 1;	
+	else {
+		item->status = TODO_DONE;
+		printf("Item successfully marked as finished\n");
+	}
+
+	return 0;
 }
 
+int mod(s_data* data, uint id)
+{
+	s_item* item;
+
+	item = get_item(data, id);
+	if (!item) {
+		return -1;
+	}
+
+	if (item->status == TODO_DONE) {
+		printf("Item already finished. Modification not allowed!\n");
+		return 0;
+	}
+
+	printf("Add a new description for %s (max. %u characters)\n",
+			item->title,
+			MAX_DESCRIPTION_LEN - 1);
+
+	if (read_buf_from_stdin(item->description, MAX_DESCRIPTION_LEN) == -1) {
+		return -1;
+	}
+
+	strtrim(item->description, " \t\v");
+	printf("Item description successfully changed\n");
+
+	return 0;
+}
