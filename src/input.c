@@ -46,7 +46,7 @@ static i8 flush_stdin(void)
 			return -1;
 		}
 
-		if (temp[bytes_read] == '\n') {
+		if (temp[bytes_read - 1] == '\n') {
 			break;
 		}
 	}
