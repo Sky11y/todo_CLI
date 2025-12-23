@@ -1,6 +1,6 @@
 #include "todo.h"
 
-int add(s_data* data)
+i8 add(s_data* data)
 {
 	s_item *item = &(data->items[data->count]);
 	
@@ -12,6 +12,7 @@ int add(s_data* data)
 		}
 		strtrim(item->title, " \t\v");
 		if (*item->title) {
+			replace_all(item->title, '|', '!');	
 			break;
 		}
 		printf("Title can't be empty\n");
@@ -24,6 +25,7 @@ int add(s_data* data)
 		return -1;
 	}
 	strtrim(item->description, " \t\v");
+	replace_all(item->description, '|', '!');	
 
 	data->count += 1;
 	item->status = 0;
@@ -36,7 +38,7 @@ int add(s_data* data)
 	return 0;
 }
 
-int del(s_data* data, uint id)
+i8 del(s_data* data, uint id)
 {
 	s_item* item;
 
@@ -49,7 +51,7 @@ int del(s_data* data, uint id)
 	return 0;	
 }
 
-int fin(s_data* data, uint id)
+i8 fin(s_data* data, uint id)
 {
 	s_item* item;
 
@@ -69,7 +71,7 @@ int fin(s_data* data, uint id)
 	return 0;
 }
 
-int mod(s_data* data, uint id)
+i8 mod(s_data* data, uint id)
 {
 	s_item* item;
 
@@ -92,7 +94,38 @@ int mod(s_data* data, uint id)
 	}
 
 	strtrim(item->description, " \t\v");
+	replace_all(item->description, '|', '!');	
 	printf("Item description successfully changed\n");
 
 	return 0;
+}
+
+i8 show(s_data* data, uint id)
+{
+	s_item* item;
+
+	item = get_item(data, id);
+	if (!item) {
+		return -1;
+	}
+
+	printf("Title: %s\nDescription: %s\n", item->title, item->description);
+
+	return 0;
+}
+
+void list(s_data* data)
+{
+	u32 i;
+
+	printf("%5s|%15s|%8s|\n", "id", "title", "status");
+	for (i = 0; i < data->count; ++i) {
+		if (data->items[i].id == 0) {
+			continue;
+		}
+		printf("%5u|%15s|%8s|\n",
+				data->items[i].id,
+				data->items[i].title,
+				data->items[i].status == 0 ? "Pending" : "Done");
+	}	
 }

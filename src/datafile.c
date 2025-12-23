@@ -1,69 +1,61 @@
 #include "todo.h"
 
-static int parse_buffer(char* buf, s_data* data)
+static int parse_line(char *line, s_data *data)
 {
-	uint j;
-	char* token;
+	u32 i;
+	u32 j;
+	s_item *item;
 
-	j = data->count;
-	for (uint i = 0;; ++i, buf = NULL) {
-		token = strtok(buf, "|");
-		if (token == NULL)
-			break;
-		switch (i % 4) {
-			case 0:
-				data->items[j].id = j + 1;
-				//data->items[j].id = strtoul(token, NULL, 10);
-				break;
-			case 1:
-				safe_strlcpy(data->items[j].title, token, MAX_TITLE_LEN);
-				break;
-			case 2:
-				safe_strlcpy(data->items[j].description, token, MAX_DESCRIPTION_LEN);
-				break;
-			case 3:
-				if (token[0] == 'P' || token[0] == 'p') {
-					data->items[j++].status = TODO_PENDING;
-				} else if (token[0] == 'D' || token[0] == 'd') {
-					data->items[j++].status = TODO_DONE;
-				}
-				if (j == data->capacity) {
-					resize_data(data);
-				}
-				break;
+	item = &data->items[data->count];
+	item->id = data->count + 1;
+
+	for (i = 0; line[i] != '|'; ++i) {
+		if (!line[i]) {
+			return -1;
 		}
+		item->title[i] = line[i];
 	}
+	item->title[i++] = '\0';
 
-	data->count = j;
+	for (j = 0; line[i + j] != '|'; ++j) {
+		if (!line[i + j]) {
+			return -1;
+		}
+		item->description[j] = line[i + j];
+	}
+	item->description[j++] = '\0';
+	item->status = line[i + j] == 'P' ? TODO_PENDING : TODO_DONE;	
+	data->count++;
+	if (data->count == data->capacity) {
+		resize_data(data);
+	}
 
 	return 0;
 }
 
-int read_datafile(int fd, s_data* data)
+i8 read_datafile(int fd, s_data* data)
 {
-	char buf[BUFFER_SIZE];
-	int bytes_read;
+	char *line;
 
 	while (TRUE) {
-		bytes_read = read(fd, buf, BUFFER_SIZE);
-		if (bytes_read == 0) {
+		line = fn_getline(fd);
+		if (!line)
 			break;
-		} else if (bytes_read == -1) {
-			return EXIT_FAILURE;
+		if (parse_line(line, data) == -1) {
+			free(line);
+			return -1;	
 		}
-	
-		if (parse_buffer(buf, data) == -1)
-			return -1;
+		free(line);
 	}
 
 	return 0;
 }
 
-int save_datafile(s_data* data)
+i8 save_datafile(s_data* data)
 {
-	FILE* datafile;
-	uint i;
-	s_item item;
+	FILE*	datafile;
+	u32		i;
+	s_item	item;
 
 	datafile = fopen("data.psv", "w");
 	if (datafile == NULL) {
@@ -75,10 +67,10 @@ int save_datafile(s_data* data)
 		if (item.id == 0) {
 			continue;
 		}	
-		fprintf(datafile, "%u|%s|%s|%s|\n", item.id,
-									 item.title,
-									 item.description,
-									 item.status == TODO_DONE ? "Done" : "Pending");
+		fprintf(datafile, "%s|%s|%s|\n", item.title,
+									 	 item.description,
+									 	 item.status == TODO_DONE ? "D" : "P");
 	}
+
 	return 0;
 }

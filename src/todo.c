@@ -2,11 +2,11 @@
 
 void main_loop(s_data* data)
 {
-	int running;
+	i8 running;
 
 	running = TRUE;
 	while (running) {
-		printf("What would you like to do? (ADD/DEL/MOD/FIN/LST/SHOW/EXIT/HELP)\n");
+		printf("What would you like to do? (ADD/DEL/MOD/FIN/SHOW/LST/EXIT/HELP)\n");
 		running = prompt_user(data);
 		if (running == -1) {
 			return;
@@ -14,12 +14,10 @@ void main_loop(s_data* data)
 	}
 }
 
-int main(int argc, char** argv)
+int main()
 {
 	int		fd;
 	s_data	data;
-	(void)argc;
-	(void)argv;
 
 	fd = open("data.psv", O_CREAT|O_RDONLY);
 	if (fd == -1) {
@@ -40,6 +38,10 @@ int main(int argc, char** argv)
 	}
 
 	close(fd);
+
+	print_welcome();
+	print_help();
+	print_warning();
 
 	main_loop(&data);
 	//debug_print(&data);

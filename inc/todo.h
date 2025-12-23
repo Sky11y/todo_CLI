@@ -6,13 +6,21 @@
 #include <stdio.h> //fprintf
 #include <stdlib.h> //malloc, realloc, free, EXIT_SUCCESS, EXIT_FAILURE
 #include <string.h> //strtok()
+#include <stdint.h>
 
-typedef unsigned int uint;
+typedef int8_t i8;
+typedef int16_t i16;
+typedef int32_t i32;
+typedef int64_t i64;
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
 
 #define TRUE 1
 #define FALSE 0
 
-#define BUFFER_SIZE 512
+#define BUFFER_SIZE 2048
 #define MAX_TITLE_LEN 16
 #define MAX_DESCRIPTION_LEN 1024
 
@@ -22,7 +30,7 @@ typedef enum {
 } e_status;
 
 typedef struct {
-	uint		id;
+	u32			id;
 	char		title[MAX_TITLE_LEN];
 	char		description[MAX_DESCRIPTION_LEN];
 	e_status	status;
@@ -30,45 +38,49 @@ typedef struct {
 
 typedef struct {
 	s_item*	items;
-	uint	count;
-	uint	capacity;
+	u32	count;
+	u32	capacity;
 } s_data;
 
 //data.c
-int init_data(s_data* data);
-int resize_data(s_data* data);
+i8 init_data(s_data* data);
+i8 resize_data(s_data* data);
 void free_data(s_data* data);
 
 //datafile.c
-int read_datafile(int fd, s_data* data);
-int save_datafile(s_data* data);
+i8 read_datafile(int fd, s_data* data);
+i8 save_datafile(s_data* data);
 
-//item_modifiers.c
-int add(s_data* data);
-int del(s_data* data, uint id);
-int fin(s_data* data, uint id);
-int mod(s_data* data, uint id);
+//commands.c
+i8 add(s_data* data);
+i8 del(s_data* data, uint id);
+i8 fin(s_data* data, uint id);
+i8 mod(s_data* data, uint id);
+i8 show(s_data* data, uint id);
+void list(s_data* data);
 
 //utils.c
-void help(void);
+void print_welcome(void);
+void print_help(void);
+void print_warning(void);
 void debug_print(s_data* data);
-void list(s_data* data);
-int show(s_data* data, uint id);
 s_item* get_item(s_data* data, uint id);
 
 //input.c
-int prompt_user(s_data* data);
-int read_buf_from_stdin(char *restrict buf, size_t n);
+i8 prompt_user(s_data* data);
+i8 read_buf_from_stdin(char *restrict buf, size_t n);
+
+//getline.c
+char *fn_getline(int fd);
 
 //strings.c
 /*
  * Copies max. *dsize* - 1 chars from *src* to *dst*.
  * Guarantees to '\0'-terminate the *dst* (hence max. dsize - 1).
  * Returns the number of characters copied, exluding the terminating '\0'.
- * Note. If *src* is empty -> *dst* will be empty.
  * Note. It is users responsiblity to make sure the size of *dst* is large enough.
  */
-uint safe_strlcpy(char *restrict dst, const char *restrict src, uint dsize);
+size_t safe_strlcpy(char *restrict dst, const char *restrict src, size_t dsize);
 
 /*
  * Checks if string *test* contains any of the characters in *chars*.
@@ -110,6 +122,13 @@ void strtrim_front(char *restrict str, const char *restrict chars);
  * Important! This function modifies the *str* in place.
  */
 void strtrim_back(char *restrict str, const char *restrict chars);
+
+/*
+ * Replace every occurence of *to_replace* with *c* in *str*
+ * Note. It is callers responsibility to make sure *c* and *to_replace* are printable chars.
+ * Important! This function modifies the *str* in place.
+ */
+void replace_all(char *restrict str, char to_replace, char c);
 
 /*
  * Change all capital characters of *str* to lower characters.

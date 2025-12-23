@@ -1,9 +1,19 @@
 #include "todo.h"
 
+static size_t fn_strlen(const char* restrict str)
+{
+	size_t i = 0;
+
+	while (str && str[i]) {
+		++i;
+	}
+	return i;
+}
+
 void strtrim(char *restrict str, const char* restrict chars)
 {
-	uint i = 0;
-	uint j = strlen(str);
+	size_t i = 0;
+	size_t j = fn_strlen(str);
 
 	//empty string -> return
 	if (i == j) {
@@ -30,8 +40,8 @@ void strtrim(char *restrict str, const char* restrict chars)
 
 void strtrim_front(char *restrict str, const char *restrict chars)
 {
-	uint i = 0;
-	uint len;
+	size_t i = 0;
+	size_t len;
 
 	while (str[i] && is_any_of(str[i], chars) == 1) {
 		++i;
@@ -42,14 +52,14 @@ void strtrim_front(char *restrict str, const char *restrict chars)
 		return ;
 	}
 
-	len = strlen(str) - i;
+	len = fn_strlen(str) - i;
 	memmove(str, &str[i], len);
 	str[len] = '\0';
 }
 
 void strtrim_back(char *restrict str, const char *restrict chars)
 {
-	uint i = strlen(str);
+	size_t i = fn_strlen(str);
 
 	if (i == 0) {
 		return ;
@@ -62,10 +72,30 @@ void strtrim_back(char *restrict str, const char *restrict chars)
 	str[i] = '\0';
 }
 
-uint safe_strlcpy(char *restrict dst, const char *restrict src, uint dsize)
+void replace_all(char *restrict str, char to_replace, char c)
 {
-	uint src_len = 0;
-	uint i;
+	size_t i = 0;
+
+	if (!str) {
+		return ;
+	}
+
+	while(str[i]) {
+		if (str[i] == to_replace) {
+			str[i] = c;
+		}
+		i++;
+	}
+}
+
+size_t safe_strlcpy(char *restrict dst, const char *restrict src, size_t dsize)
+{
+	size_t src_len = 0;
+	size_t i;
+
+	if (!dst || !src || dsize == 0) {
+		return 0;
+	}
 
 	while (src[src_len] && src_len < dsize - 1) {
 		++src_len;
@@ -81,7 +111,7 @@ uint safe_strlcpy(char *restrict dst, const char *restrict src, uint dsize)
 
 int contains(const char *restrict test, const char *restrict chars)
 {
-	uint i;
+	size_t i;
 
 	if (test == NULL) {
 		return -1;
@@ -101,7 +131,7 @@ int contains(const char *restrict test, const char *restrict chars)
 
 int is_any_of(const char test, const char *restrict chars)
 { 
-	uint i;
+	size_t i;
 
 	if (test == '\0') {
 		return -1;
@@ -121,7 +151,7 @@ int is_any_of(const char test, const char *restrict chars)
 
 int is_all_of(const char *restrict test, const char *restrict chars)
 {
-	uint i;
+	size_t i;
 	
 	if (!test) {
 		return -1;
@@ -141,7 +171,7 @@ int is_all_of(const char *restrict test, const char *restrict chars)
 
 void str_to_lower(char *restrict str)
 {
-	uint i;
+	size_t i;
 
 	if (!str) {
 		return ;
@@ -156,7 +186,7 @@ void str_to_lower(char *restrict str)
 
 void str_to_upper(char *restrict str)
 {
-	uint i;
+	size_t i;
 
 	if (!str) {
 		return ;

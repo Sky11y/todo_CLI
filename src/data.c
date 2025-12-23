@@ -1,6 +1,6 @@
 #include "todo.h"
 
-int init_data(s_data* data)
+i8 init_data(s_data* data)
 {
 	data->items = malloc(10 * sizeof(s_item));
 	if (data->items == NULL) {
@@ -12,7 +12,7 @@ int init_data(s_data* data)
 	return 0;
 }
 
-int resize_data(s_data* data)
+i8 resize_data(s_data* data)
 {
 	data->capacity *= 2;
 	data->items = realloc(data->items, data->capacity * sizeof(s_item));

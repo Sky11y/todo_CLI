@@ -1,22 +1,44 @@
 #include "todo.h"
 
-void help(void)
+void print_welcome(void)
 {
 	printf("\
-This is a simple todo program where you can save todo's, modify them and mark them as finished.\
+====================================================================================\n\
+		Welcome to Sky11y's simple todo program!!\n\
+");
+}
+
+void print_help(void)
+{
+	printf("\
+====================================================================================\n\
+\n\
+usage: CMD [<id>]\
 \n\n\
-usage: CMD [<args>]\
-\n\n\
-These are the possible commands (CMD)\n\
-	ADD		add an item to the todo list.\n\
-	DEL <id>	remove an item from the todo list\n\
-	MOD <id>	modify an item on the todo list\n\
-	FIN <id>	mark an item finished\n\
+Available commands (CMD)\n\
+	ADD		add an item to the todo list\n\
+	DEL  <id>	remove an item with given id from the todo list\n\
+	MOD  <id>	modify an item with given id in the todo list\n\
+	FIN  <id>	mark an item with given id finished\n\
+	SHOW <id>	show the item with given id with the description\n\
 	LST		list all the items in the todo list\n\
-	SHOW <id>	show the full item with the description\n\
 	EXIT		exit the program\n\
 	HELP		output the help\n\
 \n\
+Note. Since program is using pipe-separated-values (.psv) to save data, all the \n\
+possible '|' characters given as an input will be replaced by exclamation marks '!'.\n\
+====================================================================================\
+\n\
+");
+}
+
+void print_warning(void)
+{
+	printf("\
+Warning. The progress will be saved on data.psv file on your filesystem.\n\
+The data is not encrypted in any way.\n\
+Keep the data.psv file save and/or don't write any sensitive information.\n\
+====================================================================================\n\
 ");
 }
 
@@ -48,32 +70,4 @@ s_item* get_item(s_data* data, uint id)
 	}
 	printf("No such id\n");
 	return NULL;
-}
-
-void list(s_data* data)
-{
-	printf("%5s|%15s|%8s|\n", "id", "title", "status");
-	for (uint i = 0; i < data->count; ++i) {
-		if (data->items[i].id == 0) {
-			continue;
-		}
-		printf("%5u|%15s|%8s|\n",
-				data->items[i].id,
-				data->items[i].title,
-				data->items[i].status == 0 ? "Pending" : "Done");
-	}	
-}
-
-int show(s_data* data, uint id)
-{
-	s_item* item;
-
-	item = get_item(data, id);
-	if (!item) {
-		return -1;
-	}
-
-	printf("Title: %s\nDescription: %s\n", item->title, item->description);
-
-	return 0;
 }
