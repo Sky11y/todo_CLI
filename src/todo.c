@@ -19,7 +19,7 @@ int main()
 	int		fd;
 	s_data	data;
 
-	fd = open("data.psv", O_CREAT|O_RDONLY);
+	fd = open("data.psv", O_CREAT|O_RDONLY, 00644);
 	if (fd == -1) {
 		perror("Couldn't open datafile");
 		return EXIT_FAILURE;
@@ -46,7 +46,6 @@ int main()
 	main_loop(&data);
 	//debug_print(&data);
 
-	//save the work and clean up
 	save_datafile(&data);
 	free_data(&data);
 	

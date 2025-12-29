@@ -72,5 +72,6 @@ i8 save_datafile(s_data* data)
 									 	 item.status == TODO_DONE ? "D" : "P");
 	}
 
+	fclose(datafile);
 	return 0;
 }
