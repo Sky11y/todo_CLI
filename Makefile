@@ -4,15 +4,17 @@ CC			= gcc
 BUILDDIR	= build/
 SRCDIR		= src/
 INCDIR		= inc/
+LIBDIR		= lib/
 
 SRC			= $(wildcard $(SRCDIR)*.c)
 OBJ			= $(patsubst $(SRCDIR)%.c, $(BUILDDIR)%.o, $(SRC))
 DEP			= $(OBJ:.o=.d)
 
 DEPFLAGS	= -MMD -MP
-INCLUDES	= -I./$(INCDIR)
+INCLUDES	= -I$(INCDIR)
 
 CFLAGS		= -Wall -Wextra -pedantic
+LDFLAGS		= -Llib -lfn_string
 DBGFLAGS	= -g -O0 -DDEBUG
 RELFLAGS	= -O2
 SANFLAGS	= -fsanitize=address -fno-omit-frame-pointer
@@ -25,7 +27,7 @@ ifeq ($(BUILD),debug)
 endif
 
 ifeq ($(BUILD),release)
-	CLAGS += $(RELFLAGS)
+	CFLAGS += $(RELFLAGS)
 endif
 
 # === Targets === #
@@ -33,7 +35,7 @@ endif
 all:		$(NAME)
 
 $(NAME): $(OBJ)
-			$(CC) $(CFLAGS) $^ -o $@
+			$(CC) $^ $(LDFLAGS) -o $@
 
 $(BUILDDIR)%.o: $(SRCDIR)%.c | $(BUILDDIR)
 			$(CC) $(CFLAGS) $(DEPFLAGS) $(INCLUDES) -c $< -o $@
